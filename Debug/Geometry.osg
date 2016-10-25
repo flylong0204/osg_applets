@@ -1,0 +1,112 @@
+Group {
+  nodeMask 0xffffffff
+  cullingActive TRUE
+  num_children 3
+  Geode {
+    nodeMask 0xffffffff
+    cullingActive TRUE
+    num_drawables 1
+    ShapeDrawable {
+      Box {
+        Center 0 0 0
+        HalfLengths 0.5 0.5 0.5
+        Rotation 0 0 0 1
+      }
+      useDisplayList TRUE
+      useVertexBufferObjects FALSE
+      color 1 1 1 1
+    }
+  }
+  PositionAttitudeTransform {
+    nodeMask 0xffffffff
+    cullingActive TRUE
+    referenceFrame RELATIVE
+    position 2.5 0 0
+    attitude 0 0 0 1
+    scale 1 1 1
+    pivotPoint 0 0 0
+    num_children 1
+    Geode {
+      nodeMask 0xffffffff
+      cullingActive TRUE
+      num_drawables 1
+      ShapeDrawable {
+        Sphere {
+          Center 0 0 0
+          Radius 1
+        }
+        useDisplayList TRUE
+        useVertexBufferObjects FALSE
+        color 1 1 1 1
+      }
+    }
+  }
+  Geode {
+    nodeMask 0xffffffff
+    cullingActive TRUE
+    num_drawables 5
+    ShapeDrawable {
+      Sphere {
+        Center -3 0 0
+        Radius 0.8
+      }
+      useDisplayList TRUE
+      useVertexBufferObjects FALSE
+      color 0.6 0.8 0.8 1
+      TessellationHints {
+        UniqueID TessellationHints_0
+        detailRatio 2
+        createFaces TRUE FALSE
+        createNormals TRUE
+        createTextureCoords FALSE
+        createParts TRUE TRUE TRUE
+      }
+    }
+    ShapeDrawable {
+      Box {
+        Center 6 0 0
+        HalfLengths 0.8 0.8 0.8
+        Rotation 0 0 0 1
+      }
+      useDisplayList TRUE
+      useVertexBufferObjects FALSE
+      color 0.4 0.9 0.3 1
+      Use TessellationHints_0
+    }
+    ShapeDrawable {
+      Box {
+        Center 8 0 0
+        HalfLengths 0.05 1 1
+        Rotation 0 0 0 1
+      }
+      useDisplayList TRUE
+      useVertexBufferObjects FALSE
+      color 0.8 0.8 0.4 1
+      Use TessellationHints_0
+    }
+    ShapeDrawable {
+      Cone {
+        Center 0 0 -3
+        Radius 0.8
+        Height 1
+        Rotation 0 0 0 1
+      }
+      useDisplayList TRUE
+      useVertexBufferObjects FALSE
+      color 0.2 0.5 0.7 1
+      Use TessellationHints_0
+    }
+    ShapeDrawable {
+      Cylinder {
+        Center 0 0 3
+        Radius 0.8
+        Height 1
+        Rotation 0 0 0 1
+      }
+      useDisplayList TRUE
+      useVertexBufferObjects FALSE
+      color 1 0.3 0.3 1
+      Use TessellationHints_0
+    }
+  }
+}
