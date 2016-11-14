@@ -1,4 +1,4 @@
-﻿Build started 2016-11-1 21:45:01.
+﻿Build started 2016-11-14 20:23:19.
      1>Project "D:\osg\learn\osg_applets\Helloworld\Helloworld.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Helloworld.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -10,7 +10,6 @@
        Link:
          d:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\osg\learn\osg_applets\Debug\Helloworld.exe" /INCREMENTAL /NOLOGO OpenThreadsd.lib osgd.lib osgDBd.lib osgFXd.lib osgGAd.lib osgManipulatord.lib osgParticled.lib osgShadowd.lib osgSimd.lib osgTerraind.lib osgTextd.lib osgUtild.lib osgViewerd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Helloworld.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\osg\learn\osg_applets\Debug\Helloworld.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\osg\learn\osg_applets\Debug\Helloworld.lib" /MACHINE:X86 Debug\Helloworld.exe.embed.manifest.res
          Debug\HelloWorld.obj
-         Debug\South.obj
        Manifest:
          C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Helloworld.exe.embed.manifest" /manifest Debug\Helloworld.exe.intermediate.manifest
          All outputs are up-to-date.
@@ -24,4 +23,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:09.25
+Time Elapsed 00:00:21.09
