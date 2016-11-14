@@ -26,6 +26,8 @@
 
 int main( int argc, char** argv )
 {
+	osg::ref_ptr<osg::Group> root = new osg::Group;
+
 	osg::ref_ptr<osg::TessellationHints> hints = new osg::TessellationHints;
 	hints->setDetailRatio(2.0f);
 	osg::ref_ptr<osg::ShapeDrawable> clock_face, shape2;
@@ -42,6 +44,7 @@ int main( int argc, char** argv )
 	geode->addDrawable(shape2.get());
 
     osgViewer::Viewer viewer;
-    viewer.setSceneData( geode.get() );
+	root->addChild(geode.get());
+    viewer.setSceneData( root.get() );
     return viewer.run();
 }
