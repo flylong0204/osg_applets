@@ -25,17 +25,58 @@
 #include <ctime>
 #include <iostream>
 
-int get_current_angle(int type)
+double get_current_angle(int type)
 {
-    /* osg::PI; */
-	return 0;
+	 struct tm *local; 
+     time_t t;
+	 double hour, min, sec;
+	 double angle;
+
+     t=time(0);
+     local=localtime(&t);
+	 hour = (double)(local->tm_hour);
+	 min  = (double)(local->tm_min);
+	 sec  = (double)(local->tm_sec);
+
+	 std::cout << "Local hour is:" << local->tm_hour << std::endl;
+	 std::cout << "Local min is:" << local->tm_min << std::endl;
+	 std::cout << "Local sec is:" << local->tm_sec << std::endl;
+
+	 switch (type) {
+	 case (0):	/* hour */
+		 if (hour > 12) {
+			 hour = hour - 12;
+		 }
+		 angle  = (1.0 / 12.0) * 2 * osg::PI * hour;
+		 angle += (1.0 / 12.0) * 2 * osg::PI * ((60 * min + sec) / (60 * 60));	/* second */ 
+		 break;
+	 case (1):	/* minute */
+		 angle  = (1.0 / 60.0) * 2 * osg::PI * min;
+		 angle += (1.0 / 60.0) * 2 * osg::PI * (sec / 60);	/* second */ 
+		 break;
+	 case (2):	/* second */
+		 angle = (1.0 / 60.0) * 2 * osg::PI * sec;
+		 break;
+	 default:
+		 break;
+	 }
+
+#if 0
+    if (angle >= 0 && angle < ((osg::PI) / 2.0)) {
+        angle = osg::PI / 2.0 - angle;
+    } else {
+        angle = -1 * (angle - osg::PI / 2.0);
+    }
+#endif
+	angle = -1 * angle;
+	return angle;
 }
 
 /* using namespace osg; */
-class DynamicLineCallback : public osg::Drawable::UpdateCallback
+class DynamicHourCallback : public osg::Drawable::UpdateCallback
 {
 public:
-    DynamicLineCallback() : _angle(0.0) {}
+    DynamicHourCallback() : _angle(0.0) {}
     
     virtual void update( osg::NodeVisitor* nv, osg::Drawable* drawable )
     {
@@ -45,12 +86,9 @@ public:
         osg::Vec3Array* vertices = dynamic_cast<osg::Vec3Array*>( geom->getVertexArray() );
         if ( vertices )
         {
-            for ( osg::Vec3Array::iterator itr=vertices->begin(); itr!=vertices->end()-1; ++itr )
-                itr->set( (*(itr+1)) );
-            
-            _angle += 1.0 / 10.0;
             osg::Vec3& pt = vertices->back();
-            pt.set( 10.0*cos(_angle), 0.0, 10.0*sin(_angle) );
+            _angle = get_current_angle(0);
+            pt.set( 5.0*cos(_angle), 5.0*sin(_angle), 0.4 );
             vertices->dirty();
         }
     }
@@ -59,6 +97,53 @@ protected:
     float _angle;
 };
 
+class DynamicMinCallback : public osg::Drawable::UpdateCallback
+{
+public:
+    DynamicMinCallback() : _angle(0.0) {}
+    
+    virtual void update( osg::NodeVisitor* nv, osg::Drawable* drawable )
+    {
+        osg::Geometry* geom = dynamic_cast<osg::Geometry*>( drawable );
+        if ( !geom ) return;
+        
+        osg::Vec3Array* vertices = dynamic_cast<osg::Vec3Array*>( geom->getVertexArray() );
+        if ( vertices )
+        {
+            osg::Vec3& pt = vertices->back();
+            _angle = get_current_angle(1);
+            pt.set( 7.0*cos(_angle), 7.0*sin(_angle), 0.5 );
+            vertices->dirty();
+        }
+    }
+
+protected:
+    float _angle;
+};
+
+class DynamicSecCallback : public osg::Drawable::UpdateCallback
+{
+public:
+    DynamicSecCallback() : _angle(0.0) {}
+    
+    virtual void update( osg::NodeVisitor* nv, osg::Drawable* drawable )
+    {
+        osg::Geometry* geom = dynamic_cast<osg::Geometry*>( drawable );
+        if ( !geom ) return;
+        
+        osg::Vec3Array* vertices = dynamic_cast<osg::Vec3Array*>( geom->getVertexArray() );
+        if ( vertices )
+        {
+            osg::Vec3& pt = vertices->back();
+            _angle = get_current_angle(2);
+            pt.set( 9.0*cos(_angle), 9.0*sin(_angle), 0.6 );
+            vertices->dirty();
+        }
+    }
+
+protected:
+    float _angle;
+};
 int main( int argc, char** argv )
 {
 	osg::ref_ptr<osg::Group> root = new osg::Group;
@@ -74,7 +159,7 @@ int main( int argc, char** argv )
     geom_hour->addPrimitiveSet( new osg::DrawArrays(osg::DrawArrays::LINE_STRIP, 0, 2) );
     
     geom_hour->setInitialBound( osg::BoundingBox(osg::Vec3(-10.0,-10.0,-10.0), osg::Vec3(10.0,10.0,10.0)) );
-    /* geom_hour->setUpdateCallback( new DynamicLineCallback ); */
+    geom_hour->setUpdateCallback( new DynamicHourCallback );
     geom_hour->setUseDisplayList( false );
     geom_hour->setUseVertexBufferObjects( true );
 
@@ -93,7 +178,7 @@ int main( int argc, char** argv )
     geom_minute->addPrimitiveSet( new osg::DrawArrays(osg::DrawArrays::LINE_STRIP, 0, 2) );
     
     geom_minute->setInitialBound( osg::BoundingBox(osg::Vec3(-10.0,-10.0,-10.0), osg::Vec3(10.0,10.0,10.0)) );
-    /* geom_minute->setUpdateCallback( new DynamicLineCallback ); */
+    geom_minute->setUpdateCallback( new DynamicMinCallback );
     geom_minute->setUseDisplayList( false );
     geom_minute->setUseVertexBufferObjects( true );
 
@@ -112,7 +197,7 @@ int main( int argc, char** argv )
     geom_second->addPrimitiveSet( new osg::DrawArrays(osg::DrawArrays::LINE_STRIP, 0, 2) );
     
     geom_second->setInitialBound( osg::BoundingBox(osg::Vec3(-10.0,-10.0,-10.0), osg::Vec3(10.0,10.0,10.0)) );
-    /* geom_second->setUpdateCallback( new DynamicLineCallback ); */
+    geom_second->setUpdateCallback( new DynamicSecCallback );
     geom_second->setUseDisplayList( false );
     geom_second->setUseVertexBufferObjects( true );
 
@@ -137,11 +222,5 @@ int main( int argc, char** argv )
 	root->addChild(geode_second.get());
 	viewer.setSceneData( root.get() );
 
-struct tm *local; 
-     time_t t;
-     t=time(0);
-     local=localtime(&t);
-     std::cout << "Local hour is:" << local->tm_hour << std::endl;
-	 while(1);
 	return viewer.run();
 }
